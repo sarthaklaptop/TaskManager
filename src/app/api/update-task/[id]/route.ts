@@ -7,14 +7,14 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 export async function PATCH(request: NextRequest) { 
     await dbConnect();
 
-    const { title, description, status, priority, DueDate } = await request.json();
+    const { title, description, status, priority } = await request.json();
 
     try {
         const session = await getServerSession(authOptions);
         console.log("Session: ", session);
         
         if (!session || !session.user || !session.user.email) {
-            // Handle case where session or user email is not found
+            
             return NextResponse.json(
                 { message: 'Login Again, User not found in session' },
                 { status: 401 }
@@ -33,7 +33,7 @@ export async function PATCH(request: NextRequest) {
 
         const updatedTask = await TaskModel.findByIdAndUpdate(
             taskId,
-            { title, description, status, priority, DueDate },
+            { title, description, status, priority, lastUpdated: new Date() },
             { new: true }
         );
 

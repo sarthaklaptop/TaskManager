@@ -15,19 +15,19 @@ export enum PriorityStatus {
 export interface Task extends Document {
   title: string;
   description: string;
-  // status: TaskStatus;
   status: {
     type: String,
     enum: ['Todo', 'InProgress', 'Completed'],
     required: true,
   },
-  // priority: PriorityStatus;
   priority: {
     type: String,
     enum: ['Low', 'Medium', 'High'],
     required: true,
   },
-  DueDate: Date
+  DueDate: Date,
+  createdAt: Date,
+  lastUpdated: Date
 }
 
 const TaskSchema: Schema<Task> = new mongoose.Schema({
@@ -55,7 +55,7 @@ const TaskSchema: Schema<Task> = new mongoose.Schema({
     type: Date,
     required: false,
   }
-});
+}, {timestamps: { createdAt: 'createdAt', updatedAt: 'lastUpdated' }});
 
 export interface User extends Document {
     email: string;
