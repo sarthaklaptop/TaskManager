@@ -1,32 +1,9 @@
 'use client'
 import { Dialogg } from "@/components/Dialog"
-import { Button } from "@/components/ui/button"
+// import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+  Card
 } from "@/components/ui/card"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Tabs,
   TabsContent,
@@ -36,7 +13,6 @@ import {
 import axios from "axios"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import { DatePickerDemo } from "@/components/DatePicker"
 import { TaskCard } from "@/components/TaskCard"
 import KanBanDashboard from "@/components/KanBanDashboard"
 
@@ -65,8 +41,6 @@ export default function TabsDemo() {
                 });
         }
     }, [status, setIsDialogOpen]);
-
-    console.log(tasks);
 
     const handleSaveTask = (task: any) => {
         if (task._id) {

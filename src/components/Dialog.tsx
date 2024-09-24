@@ -116,6 +116,7 @@ export function Dialogg() {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="dueDate">Due Date</Label>
+              {/* @ts-ignore */}
               <DatePickerDemo value={dueDate} onChange={setDueDate} />
             </div>
           </div>

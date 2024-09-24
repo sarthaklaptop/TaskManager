@@ -26,9 +26,12 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        const filtered_tasks = 
+        // const filtered_tasks = 
     } catch (error) {
-        
+        return NextResponse.json(
+            {message: "Cant Get filtered Tasks"},
+            {status: 500}
+        )
     }
 
 }

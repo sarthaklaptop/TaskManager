@@ -10,7 +10,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { taskId
     await dbConnect();
 
     // const { taskId } = params;
-    const taskId = request.nextUrl.pathname.split("/").pop();
+    const taskId = (request.nextUrl.pathname.split("/").pop()) || (params);
     const { newStatus } = await request.json();
 
     console.log("Received taskId:", taskId);
@@ -34,17 +34,6 @@ export async function PATCH(request: NextRequest, { params }: { params: { taskId
                 { status: 401 }
             );
         }
-
-        // const taskId = request.nextUrl.pathname.split("/").pop();
-
-        // const { newStatus } = await request.json();
-
-        // if (!taskId || !newStatus) {
-        //     return NextResponse.json(
-        //         { message: 'Task ID or new status not provided' },
-        //         { status: 400 }
-        //     );
-        // }
 
         const user = await UserModel.findOne({ email: userEmail });
 
