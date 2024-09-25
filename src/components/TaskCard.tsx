@@ -31,13 +31,16 @@ export function TaskCard() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedTask, setSelectedTask] = useState<any>(null);
+    const [sortCriteria, setSortCriteria] = useState<'createdAt' | 'lastUpdated'>('createdAt');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (status === 'authenticated') {
             axios.get('/api/get-all-tasks')
                 .then(response => {
-                    setTasks(response.data.tasks);
+                    const sortedTasks = sortTasks(response.data.tasks, sortCriteria, sortOrder);
+                    setTasks(sortedTasks);
                     setLoading(false);
                 })
                 .catch(err => {
@@ -46,7 +49,7 @@ export function TaskCard() {
                     setLoading(false);
                 });
         }
-    }, [status]);
+    }, [status, sortCriteria, sortOrder]);
     
     console.log(tasks);
 
@@ -92,9 +95,43 @@ export function TaskCard() {
       }
   };
 
+  const sortTasks = (tasks: any[], criteria: 'createdAt' | 'lastUpdated', order: 'asc' | 'desc') => {
+    return tasks.slice().sort((a, b) => {
+      const dateA = new Date(a[criteria]);
+      const dateB = new Date(b[criteria]);
+  
+      if (order === 'asc') {
+        return dateA.getTime() - dateB.getTime();
+      } else {
+        return dateB.getTime() - dateA.getTime();
+      }
+    });
+  };
+
   return (
 
     <div className=" w-full flex flex-col items-center justify-center">
+        <div className='m-4 mx-auto flex items-center justify-center'>
+        <label htmlFor="sortCriteria" className='mr-2'>Sort By:</label>
+        <select
+          id="sortCriteria"
+          value={sortCriteria}
+          onChange={(e) => setSortCriteria(e.target.value as 'createdAt' | 'lastUpdated')}
+          className='mr-4'
+        >
+          <option value="createdAt">Created At</option>
+          <option value="lastUpdated">Last Updated</option>
+        </select>
+        <label htmlFor="sortOrder" className='mr-2'>Order:</label>
+        <select
+          id="sortOrder"
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
+        >
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+      </div>
         {tasks.length > 0 ? (
             tasks.map((card) => (
             <Card key={card._id} className="w-2/3 my-4">
@@ -127,6 +164,7 @@ export function TaskCard() {
         )}
 
             <Dialogg
+                // @ts-ignore
                 task={selectedTask}
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}

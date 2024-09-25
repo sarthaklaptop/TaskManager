@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { DropdownMenuRadio } from './DropDownRadio';
 import { UpdateDialog } from './UpdateTaskDialog';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
 
 export function KanBanDashboard() {
   const { data: session, status } = useSession();
@@ -23,11 +24,11 @@ export function KanBanDashboard() {
       axios.get('/api/get-all-tasks')
         .then(response => {
           const tasks = response.data.tasks;
-          const sortedTasks = sortTasks(tasks, sortCriteria, sortOrder);
-          setTasks(sortedTasks);
-          setTodoTasks(sortedTasks.filter((task: { status: string; }) => task.status === 'ToDo'));
-          setInProgressTasks(sortedTasks.filter((task: { status: string; }) => task.status === 'InProgress'));
-          setCompletedTasks(sortedTasks.filter((task: { status: string; }) => task.status === 'Completed'));
+          // const sortedTasks = tasks(tasks, sortCriteria, sortOrder);
+          setTasks(tasks);
+          setTodoTasks(tasks.filter((task: { status: string; }) => task.status === 'ToDo'));
+          setInProgressTasks(tasks.filter((task: { status: string; }) => task.status === 'InProgress'));
+          setCompletedTasks(tasks.filter((task: { status: string; }) => task.status === 'Completed'));
           setLoading(false);
         })
         .catch(err => {
@@ -38,18 +39,7 @@ export function KanBanDashboard() {
     }
   }, [status, sortCriteria, sortOrder]);
 
-  const sortTasks = (tasks: any[], criteria: 'createdAt' | 'lastUpdated', order: 'asc' | 'desc') => {
-    return tasks.slice().sort((a, b) => {
-      const dateA = new Date(a[criteria]);
-      const dateB = new Date(b[criteria]);
   
-      if (order === 'asc') {
-        return dateA.getTime() - dateB.getTime();
-      } else {
-        return dateB.getTime() - dateA.getTime();
-      }
-    });
-  };
 
 
   const handleStatusChange = (taskId: string, newStatus: string) => {
@@ -142,27 +132,6 @@ export function KanBanDashboard() {
 
   return (
     <div>
-      <div className='m-4 mx-auto flex items-center justify-center'>
-        <label htmlFor="sortCriteria" className='mr-2'>Sort By:</label>
-        <select
-          id="sortCriteria"
-          value={sortCriteria}
-          onChange={(e) => setSortCriteria(e.target.value as 'createdAt' | 'lastUpdated')}
-          className='mr-4'
-        >
-          <option value="createdAt">Created At</option>
-          <option value="lastUpdated">Last Updated</option>
-        </select>
-        <label htmlFor="sortOrder" className='mr-2'>Order:</label>
-        <select
-          id="sortOrder"
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
-        >
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
-      </div>
       <DragDropContext onDragEnd={handleDragEnd}>
         
         <div className='grid grid-cols-3 text-center border-2 w-4/5 mx-auto gap-2 m-2'>
@@ -173,35 +142,38 @@ export function KanBanDashboard() {
             {(provided, snapshot) => (
               <div className='m-2' ref={provided.innerRef} {...provided.droppableProps}>
                 <h2 className='bg-amber-400 mb-2 w-fit text-center mx-auto p-2 rounded-sm hover:bg-amber-500'>ToDo Tasks</h2>
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {todoTasks.map((task, index) => (
-                    <Draggable key={task._id.toString()} draggableId={task._id.toString()} index={index}>
-                      {(provided, snapshot) => (
-                        <div
-                          className='flex border flex-col min-h-36 p-4 rounded-lg mb-2'
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <div className='flex items-center justify-between'>
-                            <p className='font-bold text-left'>{task.title}</p>
-                            <button><UpdateDialog currTitle={task.title} taskId={task._id} currDesc={task.description} currStatus={task.status} currPriority={task.priority} /></button>
+                  {/* <ScrollArea className="h-72 w-48 rounded-md border"> */}
+                    <div className='bg-gray-200 m-2 p-2' {...provided.droppableProps} ref={provided.innerRef}>
+                    {todoTasks.map((task, index) => (
+                      <Draggable key={task._id.toString()} draggableId={task._id.toString()} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            className='flex border-2 border-gray-600 flex-col min-h-36 p-4 rounded-lg mb-2'
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <div className='flex items-center justify-between'>
+                              <p className='font-bold text-left'>{task.title}</p>
+                              <button><UpdateDialog currTitle={task.title} taskId={task._id} currDesc={task.description} currStatus={task.status} currPriority={task.priority} /></button>
+                            </div>
+                            <p className='font-medium text-gray-500 text-left'>{task.description || "No Description"}</p>
+                            {/* <DropdownMenuRadio
+                              taskId={task._id}
+                              currentState={task.status}
+                              secondState="InProgress"
+                              thirdState="Completed"
+                              onStatusChange={(newStatus) => handleStatusChange(task._id, newStatus)}
+                            /> */}
+                            <p className='font-bold'>Priority: {task.priority}</p>
                           </div>
-                          <p className='font-medium text-gray-500 text-left'>{task.description || "No Description"}</p>
-                          <DropdownMenuRadio
-                            taskId={task._id}
-                            currentState={task.status}
-                            secondState="InProgress"
-                            thirdState="Completed"
-                            onStatusChange={(newStatus) => handleStatusChange(task._id, newStatus)}
-                          />
-                          <p>Priority: {task.priority}</p>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+
+                  {/* </ScrollArea> */}
               </div>
               
             )}
@@ -213,26 +185,29 @@ export function KanBanDashboard() {
             {(provided, snapshot) => (
               <div className='m-2'>
                 <h2 className='bg-blue-400 mb-2 w-fit text-center mx-auto p-2 rounded-sm hover:bg-blue-500'>InProgress Tasks</h2>
-                <div {...provided.droppableProps} ref={provided.innerRef}>
+                <div className='bg-gray-200 m-2 p-2' {...provided.droppableProps} ref={provided.innerRef}>
                   {inProgressTasks.map((task, index) => (
                     <Draggable key={task._id} draggableId={task._id.toString()} index={index}>
                       {(provided, snapshot) => (
                         <div
-                          className='flex border flex-col min-h-36 p-4 rounded-lg mb-2'
+                          className='flex border-2 border-gray-600 flex-col min-h-36 p-4 rounded-lg mb-2'
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <p className='font-bold text-left'>{task.title}</p>
+                          <div className='flex items-center justify-between'>
+                              <p className='font-bold text-left'>{task.title}</p>
+                              <button><UpdateDialog currTitle={task.title} taskId={task._id} currDesc={task.description} currStatus={task.status} currPriority={task.priority} /></button>
+                            </div>
                           <p className='font-medium text-gray-500 text-left'>{task.description || "No Description"}</p>
-                          <DropdownMenuRadio
+                          {/* <DropdownMenuRadio
                             taskId={task._id}
                             currentState={task.status}
                             secondState="ToDo"
                             thirdState="Completed"
                             onStatusChange={(newStatus) => handleStatusChange(task._id, newStatus)}
-                          />
-                          <p>Priority: {task.priority}</p>
+                          /> */}
+                          <p className='font-bold'>Priority: {task.priority}</p>
                         </div>
                       )}
                     </Draggable>
@@ -248,19 +223,19 @@ export function KanBanDashboard() {
             {(provided, snapshot) => (
               <div className='m-2'>
                 <h2 className='bg-green-400 mb-2 w-fit text-center mx-auto p-2 rounded-sm hover:bg-green-500'>Completed Tasks</h2>
-                <div {...provided.droppableProps} ref={provided.innerRef}>
+                <div className='bg-gray-200 m-2 p-2' {...provided.droppableProps} ref={provided.innerRef}>
                   {completedTasks.map((task, index) => (
                     <Draggable key={task._id} draggableId={task._id.toString()} index={index}>
                       {(provided, snapshot) => (
                         <div
-                          className='flex border flex-col min-h-36 p-4 rounded-lg mb-2'
+                          className='flex border-2 border-gray-600 flex-col min-h-36 p-4 rounded-lg mb-2'
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
                           <p className='font-bold text-left'>{task.title}</p>
                           <p className='font-medium text-gray-500 text-left'>{task.description || "No Description"}</p>
-                          <p>Priority: {task.priority}</p>
+                          <p className='font-bold'>Priority: {task.priority}</p>
                         </div>
                       )}
                     </Draggable>
