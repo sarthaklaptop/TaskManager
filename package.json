@@ -28,7 +28,6 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
-    "@types/mongoose": "^5.11.97",
     "@types/react-beautiful-dnd": "^13.1.8",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
