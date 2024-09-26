@@ -1,97 +1,10 @@
 'use client'
 
-// import React from "react";
-// import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button} from "@nextui-org/react";
-// import { useSession } from "next-auth/react";
-// // import {AcmeLogo} from "./AcmeLogo.jsx";
-
-// export default function App() {
-//   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-//   const menuItems = [
-//     "Profile",
-//     "Dashboard",
-//     "Activity",
-//     "Analytics",
-//     "System",
-//     "Deployments",
-//     "My Settings",
-//     "Team Settings",
-//     "Help & Feedback",
-//     "Log Out",
-//   ];
-  
-//   const { data: session, status } = useSession();
-
-//   return (
-
-
-//     <Navbar onMenuOpenChange={setIsMenuOpen}>
-//       <NavbarContent>
-//         <NavbarMenuToggle
-//           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-//           className="sm:hidden"
-//         />
-//         <NavbarBrand>
-//           {/* <AcmeLogo /> */}
-//           <p className="font-bold text-inherit">ACME</p>
-//         </NavbarBrand>
-//       </NavbarContent>
-
-//       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-//         <NavbarItem>
-//           <Link color="foreground" href="#">
-//             Features
-//           </Link>
-//         </NavbarItem>
-//         <NavbarItem isActive>
-//           <Link href="#" aria-current="page">
-//             Customers
-//           </Link>
-//         </NavbarItem>
-//         <NavbarItem>
-//           <Link color="foreground" href="#">
-//             Integrations
-//           </Link>
-//         </NavbarItem>
-//       </NavbarContent>
-//       <NavbarContent justify="end">
-//         <NavbarItem className="hidden lg:flex">
-//           <Link href="#">Login</Link>
-//         </NavbarItem>
-//         <NavbarItem>
-//           <Button as={Link} color="primary" href="#" variant="flat">
-//             Sign Up
-//           </Button>
-//         </NavbarItem>
-//       </NavbarContent>
-//       <NavbarMenu>
-//         {menuItems.map((item, index) => (
-//           <NavbarMenuItem key={`${item}-${index}`}>
-//             <Link
-//               color={
-//                 index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-//               }
-//               className="w-full"
-//               href="#"
-//               size="lg"
-//             >
-//               {item}
-//             </Link>
-//           </NavbarMenuItem>
-//         ))}
-//       </NavbarMenu>
-//     </Navbar>
-//   );
-// }
-
 
 import React from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { Button } from './ui/button';
-// import { getServerSession } from 'next-auth';
-// import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 
 function Navbar() {
     // const session = await getServerSession(authOptions);
@@ -117,23 +30,31 @@ function Navbar() {
     const userMail = session?.user?.email;
 
     return (
-        <nav className="p-4 md:p-6 shadow-md bg-gray-900 text-white">
+        <nav className="p-4 md:p-6 shadow-md text-black ">
             <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-                <a href="/" className="text-xl font-bold mb-4 md:mb-0">
-                    Task Manager
+                <a href="/" className="text-xl font-bold text-red-500 mb-4 md:mb-0">
+                    TimeTasker
                 </a>
                 {session ? (
                     <>
                         <span className="mr-4">
                             Welcome, {userMail}
                         </span>
-                        <Button onClick={() => signOut()} className="w-full md:w-auto bg-slate-100 text-black" variant='outline'>
-                            Logout
+                        <Button onClick={() => signOut()} className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                            <span className="inline-flex h-full w-full px-4 cursor-pointer items-center justify-center rounded-full bg-slate-100 p-2 text-sm font-medium text-black backdrop-blur-3xl">
+                                Logout
+                            </span>
                         </Button>
                     </>
                 ) : (
                     <Link href="/sign-in">
-                        <Button className="w-full md:w-auto bg-slate-100 text-black" variant={'outline'}>Login</Button>
+                        <button className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                            <span className="inline-flex h-full w-full px-4 cursor-pointer items-center justify-center rounded-full bg-slate-100 p-2 text-sm font-medium text-black backdrop-blur-3xl">
+                                Login
+                            </span>
+                        </button>
                     </Link>
                 )}
             </div>

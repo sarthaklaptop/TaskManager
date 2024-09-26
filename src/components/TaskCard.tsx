@@ -21,6 +21,7 @@ import {
 import axios from "axios"
 import { useSession } from "next-auth/react"
 import { Dialogg } from "./Dialog";
+import { UpdateDialog } from "./UpdateTaskDialog";
 
 
 export function TaskCard() {
@@ -111,13 +112,14 @@ export function TaskCard() {
   return (
 
     <div className=" w-full flex flex-col items-center justify-center">
-        <div className='m-4 mx-auto flex items-center justify-center'>
+      <div className='m-4 mx-auto flex gap-2 items-center justify-center'>
         <label htmlFor="sortCriteria" className='mr-2'>Sort By:</label>
         <select
           id="sortCriteria"
           value={sortCriteria}
           onChange={(e) => setSortCriteria(e.target.value as 'createdAt' | 'lastUpdated')}
-          className='mr-4'
+          // className='mr-4'
+          className="py-3 px-4 pe-9 block w-full border-gray-200 rounded-full text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
         >
           <option value="createdAt">Created At</option>
           <option value="lastUpdated">Last Updated</option>
@@ -127,6 +129,7 @@ export function TaskCard() {
           id="sortOrder"
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
+          className="py-3 px-4 pe-9 block w-full border-gray-200 rounded-full text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
         >
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
@@ -147,7 +150,10 @@ export function TaskCard() {
                       className="hover:bg-blue-400 transition-all duration-200 hover:text-white"
                       onClick={() => handleEdit(card)}
                     >
-                      Edit
+                      <div className="flex flex-row gap-2">
+                        <p className="my-auto">Edit</p>
+                        <UpdateDialog currTitle={card.title} taskId={card._id} currDesc={card.description} currStatus={card.status} currPriority={card.priority} logo={true}/>
+                      </div>
                     </Button>
                     <Button
                         variant="outline"

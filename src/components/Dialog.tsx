@@ -64,7 +64,7 @@ export function Dialogg() {
             Add Task
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-gray-500 text-white">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Create New Task</DialogTitle>
           </DialogHeader>
@@ -72,6 +72,7 @@ export function Dialogg() {
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="title">Title</Label>
               <Input
+                placeholder="Title"
                 required
                 id="title"
                 value={title}
@@ -82,6 +83,7 @@ export function Dialogg() {
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="description">Description</Label>
               <Input
+                placeholder="Description"
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -121,9 +123,12 @@ export function Dialogg() {
             </div>
           </div>
           <DialogFooter>
-            <Button className="border-2" onClick={handleSaveChanges}>
+            {/* <Button className="border-2" onClick={handleSaveChanges}>
               Save Task
-            </Button>
+            </Button> */}
+            <button onClick={handleSaveChanges} className="px-8 py-2 rounded-md bg-black text-white font-bold transition duration-200 hover:bg-white hover:text-black border-2 border-transparent hover:border-red-400">
+              Save Task
+            </button>
           </DialogFooter>
         </DialogContent>
       </UIDialog>

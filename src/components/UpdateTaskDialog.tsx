@@ -30,10 +30,11 @@ interface UpdateDialogInterface {
     currDesc: string,
     currStatus: string,
     currPriority: string,
-    taskId: string
+    taskId: string,
+    logo: boolean
 }
 
-export function UpdateDialog({currTitle, taskId, currDesc, currStatus, currPriority}:UpdateDialogInterface) {
+export function UpdateDialog({currTitle, taskId, currDesc, currStatus, currPriority, logo}:UpdateDialogInterface) {
   // Form States
   const [title, setTitle] = useState<string>(currTitle);
   const [description, setDescription] = useState<string>(currDesc);
@@ -44,6 +45,8 @@ export function UpdateDialog({currTitle, taskId, currDesc, currStatus, currPrior
 
   // Dialog open/close state
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  // console.log("Task Id: ", taskId);
 
   const newTask = {
     title,
@@ -71,7 +74,9 @@ export function UpdateDialog({currTitle, taskId, currDesc, currStatus, currPrior
       <UIDialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button variant="outline" onClick={() => setIsOpen(true)}>
-            <FaRegEdit />
+            {
+              logo ? (<FaRegEdit /> ) : ('Edit')
+            }
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] bg-gray-500 text-white">

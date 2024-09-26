@@ -37,18 +37,21 @@ export default function SignUpForm() {
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
+
     try {
       const response = await axios.post('/api/sign-up', data);
 
-      toast.success(response.data.message)
+      console.log("response logging:- ",response);
 
-      alert("Success");
+      toast.success(response.data.message)
 
       router.replace(`/dashboard`);
 
       setIsSubmitting(false);
-    } catch (error) {
+    } catch (error:any) {
       console.error('Error during sign-up:', error);
+
+      console.log("response error:- ",error);
 
       const axiosError = error as AxiosError<ApiResponse>;
 
@@ -56,7 +59,7 @@ export default function SignUpForm() {
       let errorMessage = axiosError.response?.data.message;
       ('There was a problem with your sign-up. Please try again.');
 
-      toast.error("Sign Up Failed");
+      toast.error(`${error.response.data.message}`);
 
 
       setIsSubmitting(false);
@@ -64,7 +67,7 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-800">
+    <div className="flex justify-center items-center min-h-screen">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
@@ -96,16 +99,21 @@ export default function SignUpForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className='w-full' disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
-                </>
-              ) : (
-                'Sign Up'
-              )}
-            </Button>
+            <button type="submit" className="w-full relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                {isSubmitting ? (
+                  <div className=' flex items-center justify-center mx-auto'>
+                    <Loader2 className=" h-4 animate-spin mx-auto" />
+                    <p>Please wait</p>
+                  </div>
+                ) : (
+                  <>
+                    <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+                    <span className="inline-flex h-full w-full px-4 cursor-pointer items-center justify-center rounded-full bg-slate-100 p-2 text-sm font-medium text-black backdrop-blur-3xl">
+                    Sign Up
+                    </span>
+                  </>
+                )}
+            </button>
           </form>
         </Form>
         <div className="text-center mt-4">

@@ -7,6 +7,7 @@ import { DropdownMenuRadio } from './DropDownRadio';
 import { UpdateDialog } from './UpdateTaskDialog';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
+import toast from 'react-hot-toast';
 
 export function KanBanDashboard() {
   const { data: session, status } = useSession();
@@ -39,7 +40,9 @@ export function KanBanDashboard() {
     }
   }, [status, sortCriteria, sortOrder]);
 
-  
+  useEffect(() => {
+    console.log("Tasks state updated: ", todoTasks, inProgressTasks, completedTasks);
+  }, [todoTasks, inProgressTasks, completedTasks]);    
 
 
   const handleStatusChange = (taskId: string, newStatus: string) => {
@@ -58,6 +61,11 @@ export function KanBanDashboard() {
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
+
+    if (!result.source || !result.destination) {
+      console.log("Drag source or destination missing");
+      return;
+    }
 
     const { source, destination } = result;
 
@@ -98,17 +106,17 @@ export function KanBanDashboard() {
       } else {
         updatedCompletedTasks.splice(destination.index, 0, movedTask);
       }
-      // updatedTasks.splice(destination.index, 0, movedTask);
-      // setTasks(updatedTasks);
 
       setTodoTasks(updatedTodoTasks);
       setInProgressTasks(updatedInProgressTasks);
       setCompletedTasks(updatedCompletedTasks);
 
+      // console.log("Updating task with ID:", movedTask._id, "to status:", movedTask.status);
       axios
-        .patch(`/api/change-status/${movedTask._id}`, {status: movedTask.status})
+        .patch(`/api/change-status/${movedTask._id}`, {newStatus: movedTask.status})
         .then((response) => {
           console.log("Task Updated", response.data);
+          toast.success("Task Status Updated");
         })
         .catch((error) => {
           console.error("Error updating task status: ", error);
@@ -155,16 +163,9 @@ export function KanBanDashboard() {
                           >
                             <div className='flex items-center justify-between'>
                               <p className='font-bold text-left'>{task.title}</p>
-                              <button><UpdateDialog currTitle={task.title} taskId={task._id} currDesc={task.description} currStatus={task.status} currPriority={task.priority} /></button>
+                              <button><UpdateDialog currTitle={task.title} taskId={task._id} currDesc={task.description} currStatus={task.status} currPriority={task.priority} logo={true}/></button>
                             </div>
                             <p className='font-medium text-gray-500 text-left'>{task.description || "No Description"}</p>
-                            {/* <DropdownMenuRadio
-                              taskId={task._id}
-                              currentState={task.status}
-                              secondState="InProgress"
-                              thirdState="Completed"
-                              onStatusChange={(newStatus) => handleStatusChange(task._id, newStatus)}
-                            /> */}
                             <p className='font-bold'>Priority: {task.priority}</p>
                           </div>
                         )}
@@ -197,7 +198,7 @@ export function KanBanDashboard() {
                         >
                           <div className='flex items-center justify-between'>
                               <p className='font-bold text-left'>{task.title}</p>
-                              <button><UpdateDialog currTitle={task.title} taskId={task._id} currDesc={task.description} currStatus={task.status} currPriority={task.priority} /></button>
+                              <button><UpdateDialog currTitle={task.title} taskId={task._id} currDesc={task.description} currStatus={task.status} currPriority={task.priority} logo={true} /></button>
                             </div>
                           <p className='font-medium text-gray-500 text-left'>{task.description || "No Description"}</p>
                           {/* <DropdownMenuRadio
