@@ -32,10 +32,6 @@ export default function TabsDemo() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    // const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-    // const [selectedTask, setSelectedTask] = useState<any>(null);
-
-
     useEffect(() => {
         if (status === 'authenticated') {
             axios.get('/api/get-all-tasks')
@@ -50,30 +46,6 @@ export default function TabsDemo() {
                 });
         }
     }, [status]);
-
-    // const handleSaveTask = (task: any) => {
-    //     if (task._id) {
-    //         // Update existing task
-    //         axios.put(`/api/update-task/${task._id}`, task)
-    //             .then(response => {
-    //                 setTasks(tasks.map(t => (t._id === task._id ? response.data.task : t)));
-    //             })
-    //             .catch(err => {
-    //                 console.error('Error updating task:', err);
-    //             });
-    //     } else {
-    //         // Create a new task
-    //         axios.post('/api/create-task', task)
-    //             .then(response => {
-    //                 setTasks([...tasks, response.data.task]);
-    //             })
-    //             .catch(err => {
-    //                 console.error('Error creating task:', err);
-    //             });
-    //     }
-    //     // setIsDialogOpen(false);
-    // };
-
 
 
     if (status === 'loading') {
@@ -94,9 +66,9 @@ export default function TabsDemo() {
     }
 
   return (
-    <div className=" flex w-full flex-col g-2 mx-auto items-center justify-center p-4">
+    <div className=" flex w-full flex-col g-2 bg-white pt-7 mx-auto justify-start p-4">
         <Tabs defaultValue="account" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid mx-auto w-1/2 grid-cols-2">
                 <TabsTrigger value="alltasks">All Tasks</TabsTrigger>
                 <TabsTrigger value="kanbandashboard">Kanban Dashboard</TabsTrigger>
             </TabsList>

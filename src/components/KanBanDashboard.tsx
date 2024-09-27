@@ -8,6 +8,9 @@ import { UpdateDialog } from './UpdateTaskDialog';
 import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import toast from 'react-hot-toast';
+import CropSquareIcon from '@mui/icons-material/CropSquare';
+import { GrInProgress } from "react-icons/gr";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 export function KanBanDashboard() {
   const { data: session, status } = useSession();
@@ -148,15 +151,15 @@ export function KanBanDashboard() {
           {/* ToDo Tasks */}
           <Droppable droppableId="ToDo">
             {(provided, snapshot) => (
-              <div className='m-2' ref={provided.innerRef} {...provided.droppableProps}>
-                <h2 className='bg-amber-400 mb-2 w-fit text-center mx-auto p-2 rounded-sm hover:bg-amber-500'>ToDo Tasks</h2>
+              <div className='m-2 bg-[#dde8fe]' ref={provided.innerRef} {...provided.droppableProps}>
+                <h2 className='mb-2 w-fit flex text-left mx-auto p-2 rounded-sm text-blue-600 font-semibold '> <span><CropSquareIcon/></span> ToDo Tasks</h2>
                   {/* <ScrollArea className="h-72 w-48 rounded-md border"> */}
-                    <div className='bg-gray-200 m-2 p-2' {...provided.droppableProps} ref={provided.innerRef}>
+                    <div className='bg-white m-2 p-2' {...provided.droppableProps} ref={provided.innerRef}>
                     {todoTasks.map((task, index) => (
                       <Draggable key={task._id.toString()} draggableId={task._id.toString()} index={index}>
                         {(provided, snapshot) => (
                           <div
-                            className='flex border-2 border-gray-600 flex-col min-h-36 p-4 rounded-lg mb-2'
+                            className='flex bg-white border-gray-600 flex-col min-h-36 p-4 rounded-lg mb-2'
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
@@ -184,14 +187,14 @@ export function KanBanDashboard() {
           {/* In Progress Tasks */}
           <Droppable droppableId="InProgress">
             {(provided, snapshot) => (
-              <div className='m-2'>
-                <h2 className='bg-blue-400 mb-2 w-fit text-center mx-auto p-2 rounded-sm hover:bg-blue-500'>InProgress Tasks</h2>
-                <div className='bg-gray-200 m-2 p-2' {...provided.droppableProps} ref={provided.innerRef}>
+              <div className='m-2 bg-[#faecd7]'>
+                <h2 className=' mb-2 w-fit flex text-left mx-auto items-center text-amber-600 font-semibold p-2 rounded-sm'> <span><GrInProgress/></span> InProgress Tasks</h2>
+                <div className='bg-white m-2 p-2' {...provided.droppableProps} ref={provided.innerRef}>
                   {inProgressTasks.map((task, index) => (
                     <Draggable key={task._id} draggableId={task._id.toString()} index={index}>
                       {(provided, snapshot) => (
                         <div
-                          className='flex border-2 border-gray-600 flex-col min-h-36 p-4 rounded-lg mb-2'
+                          className='flex bg-white border-gray-600 flex-col min-h-36 p-4 rounded-lg mb-2'
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
@@ -222,14 +225,14 @@ export function KanBanDashboard() {
           {/* Completed Tasks */}
           <Droppable droppableId="Completed">
             {(provided, snapshot) => (
-              <div className='m-2'>
-                <h2 className='bg-green-400 mb-2 w-fit text-center mx-auto p-2 rounded-sm hover:bg-green-500'>Completed Tasks</h2>
-                <div className='bg-gray-200 m-2 p-2' {...provided.droppableProps} ref={provided.innerRef}>
+              <div className='m-2 bg-[#fdf1ed]'>
+                <h2 className='mb-2 w-fit text-red-400 font-semibold text-center mx-auto p-2 rounded-sm'> <span><TaskAltIcon/></span>Completed Tasks</h2>
+                <div className='bg-white m-2 p-2' {...provided.droppableProps} ref={provided.innerRef}>
                   {completedTasks.map((task, index) => (
                     <Draggable key={task._id} draggableId={task._id.toString()} index={index}>
                       {(provided, snapshot) => (
                         <div
-                          className='flex border-2 border-gray-600 flex-col min-h-36 p-4 rounded-lg mb-2'
+                          className='flex bg-white flex-col min-h-36 p-4 rounded-lg mb-2'
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
