@@ -140,7 +140,7 @@ export function TaskCard() {
       </div>
         {tasks.length > 0 ? (
             tasks.map((card) => (
-            <Card key={card._id} className="w-2/3 my-4 flex">
+            <Card key={card._id} className="md:w-2/3 my-4 flex">
                 <CardHeader className="w-2/3">
                     <CardTitle className="font-bold">{card.title}</CardTitle>
                     <CardDescription>{card.description}</CardDescription>

@@ -66,13 +66,13 @@ export function Dialogg() {
             Add Task
           </Button>
         </DialogTrigger>
-        <DialogContent className="w-2/3">
+        <DialogContent className="w-full md:w-2/3">
           <DialogHeader>
-            <DialogTitle>Create New Task</DialogTitle>
+            <DialogTitle className="text-left md:text-center">Create New Task</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4 w-full">
+          <div className="grid gap-4 py-4">
             <div className="w-full">
-              <div className="grid items-center gap-4 w-full">
+              <div className="grid items-center gap-4">
                 {/* <Label htmlFor="title">Title</Label> */}
                 <Input
                   placeholder="Title"
@@ -80,7 +80,7 @@ export function Dialogg() {
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="col-span-3 border-none font-bold w-full"
+                  className="col-span-3 border-none font-bold"
                 />
               </div>
               <div className="grid items-center gap-4">
@@ -94,7 +94,7 @@ export function Dialogg() {
                 />
               </div>
             </div>
-            <div className=" flex gap-2 ">
+            <div className=" flex flex-col md:flex-row gap-4  md:gap-2">
               <div className="grid items-center gap-4">
                 {/* <Label htmlFor="status">Status</Label> */}
                 <Select value={taskStatus} onValueChange={setTaskStatus}>

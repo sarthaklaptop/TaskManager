@@ -68,7 +68,7 @@ export default function TabsDemo() {
   return (
     <div className=" flex w-full flex-col g-2 bg-white pt-7 mx-auto justify-start p-4">
         <Tabs defaultValue="account" className="w-full">
-            <TabsList className="grid mx-auto w-1/2 grid-cols-2">
+            <TabsList className="grid mx-auto md:w-1/2 grid-cols-2">
                 <TabsTrigger value="alltasks">All Tasks</TabsTrigger>
                 <TabsTrigger value="kanbandashboard">Kanban Dashboard</TabsTrigger>
             </TabsList>

@@ -145,9 +145,7 @@ export function KanBanDashboard() {
     <div>
       <DragDropContext onDragEnd={handleDragEnd}>
         
-        <div className='grid grid-cols-3 text-center border-2 w-4/5 mx-auto gap-2 m-2'>
-
-
+        <div className='grid md:grid-cols-3  text-center border-2 w-4/5 mx-auto gap-2 m-2'>
           {/* ToDo Tasks */}
           <Droppable droppableId="ToDo">
             {(provided, snapshot) => (
