@@ -30,9 +30,9 @@ function Navbar() {
     const userMail = session?.user?.email;
 
     return (
-        <nav className="p-4 md:p-6 shadow-md text-black ">
-            <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-                <a href="/" className="text-xl font-bold text-red-500 mb-4 md:mb-0">
+        <nav className="p-2 md:p-6 shadow-md text-black ">
+            <div className="container mx-auto flex md:flex-row justify-between items-center">
+                <a href="/" className="text-lg md:text-xl font-bold text-red-500">
                     TimeTasker
                 </a>
                 {session ? (
@@ -49,7 +49,7 @@ function Navbar() {
                     </>
                 ) : (
                     <Link href="/sign-in">
-                        <button className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                        <button className="relative inline-flex h-9 md-h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
                             <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
                             <span className="inline-flex h-full w-full px-4 cursor-pointer items-center justify-center rounded-full bg-slate-100 p-2 text-sm font-medium text-black backdrop-blur-3xl">
                                 Login

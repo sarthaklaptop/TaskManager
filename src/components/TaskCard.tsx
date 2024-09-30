@@ -22,6 +22,7 @@ import axios from "axios"
 import { useSession } from "next-auth/react"
 import { Dialogg } from "./Dialog";
 import { UpdateDialog } from "./UpdateTaskDialog";
+import toast from "react-hot-toast";
 
 
 export function TaskCard() {
@@ -40,7 +41,8 @@ export function TaskCard() {
         if (status === 'authenticated') {
             axios.get('/api/get-all-tasks')
                 .then(response => {
-                    const sortedTasks = sortTasks(response.data.tasks, sortCriteria, sortOrder);
+                    const filteredTasks = response.data.tasks.filter(task => task.status !== 'Completed');
+                    const sortedTasks = sortTasks(filteredTasks, sortCriteria, sortOrder);
                     setTasks(sortedTasks);
                     setLoading(false);
                 })
@@ -60,6 +62,7 @@ export function TaskCard() {
             console.log('Task deleted:', response.data);
             // Update the tasks state after successful deletion
             setTasks(tasks.filter(task => task._id !== taskId));
+            toast.success('Task deleted successfully!');
           })
           .catch(err => {
             console.error('Error deleting task:', err);
@@ -137,23 +140,23 @@ export function TaskCard() {
       </div>
         {tasks.length > 0 ? (
             tasks.map((card) => (
-            <Card key={card._id} className="w-2/3 my-4">
-                <CardHeader>
-                    <CardTitle>Title:- {card.title}</CardTitle>
-                    <CardDescription>Description:- {card.description}</CardDescription>
+            <Card key={card._id} className="w-2/3 my-4 flex">
+                <CardHeader className="w-2/3">
+                    <CardTitle className="font-bold">{card.title}</CardTitle>
+                    <CardDescription>{card.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex gap-2 items-center justify-evenly w-full m-0 p-2">
                     <Button variant="outline">{card.status}</Button>
                     <Button variant="outline">{card.priority}</Button>
                     <Button 
                       variant="outline"
-                      className="hover:bg-blue-400 transition-all duration-200 hover:text-white"
+                      className="w-fit p-0"
                       onClick={() => handleEdit(card)}
                     >
-                      <div className="flex flex-row gap-2">
-                        <p className="my-auto">Edit</p>
-                        <UpdateDialog currTitle={card.title} taskId={card._id} currDesc={card.description} currStatus={card.status} currPriority={card.priority} logo={true}/>
-                      </div>
+                      <div className="w-full">
+                        {/* <p className="my-auto"></p> */}
+                        <UpdateDialog currTitle={card.title} taskId={card._id} currDesc={card.description} currStatus={card.status} currPriority={card.priority} logo={false}/>
+                        </div>
                     </Button>
                     <Button
                         variant="outline"

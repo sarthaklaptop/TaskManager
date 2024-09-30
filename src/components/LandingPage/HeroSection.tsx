@@ -10,16 +10,16 @@ const HeroSection = () => {
     const words = ["Tasks", "Time"];
 
   return (
-    <div className=' flex w-full mx-auto items-center justify-center h-[100vh]'>
+    <div className=' flex w-full mx-auto items-center p-2 justify-center h-[80vh] md:h-[100vh]'>
         <BlurFade delay={BLUR_FADE_DELAY * 15}>
             <div className=' flex flex-col gap-5'>
                 <div className=' flex flex-col gap-5'>
-                    <h2 className="text-5xl font-bold">
+                    <h2 className="text-3xl md:text-5xl text-center md:text-left font-bold">
                         <span className='text-red-500'>Timetaskr</span> - Master Your <br />
                         <FlipWords words={words} /> <br />
                         {/* <Cover>Tasks</Cover>, Master Your Time */}
                     </h2>
-                    <p className='text-gray-600'>
+                    <p className='text-gray-600 text-base text-center md:text-lg'>
                         Effortless task and time management for organized, productive days.
                     </p>
                 </div>
@@ -32,7 +32,7 @@ const HeroSection = () => {
                             </span>
                         </button>
                     </Link>
-                    <p className=' text-gray-600'>Unlimited free trial. No credit card required.</p>
+                    <p className=' text-gray-600 text-xs text-center md:text-base'>Unlimited free trial. No credit card required.</p>
                 </div>
             </div>
         </BlurFade>

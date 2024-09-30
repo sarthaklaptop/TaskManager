@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export function Dialogg() {
   // Form States
@@ -50,6 +51,7 @@ export function Dialogg() {
       .then((response) => {
         console.log("Task saved:", response.data);
         setIsOpen(false);
+        toast.success("Task Added successfully!");
       })
       .catch((err) => {
         console.error("Error saving task:", err);
@@ -64,62 +66,70 @@ export function Dialogg() {
             Add Task
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="w-2/3">
           <DialogHeader>
             <DialogTitle>Create New Task</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                placeholder="Title"
-                required
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="col-span-3"
-              />
+          <div className="grid gap-4 py-4 w-full">
+            <div className="w-full">
+              <div className="grid items-center gap-4 w-full">
+                {/* <Label htmlFor="title">Title</Label> */}
+                <Input
+                  placeholder="Title"
+                  required
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="col-span-3 border-none font-bold w-full"
+                />
+              </div>
+              <div className="grid items-center gap-4">
+                {/* <Label htmlFor="description">Description</Label> */}
+                <Input
+                  placeholder="Description"
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="col-span-3 border-none font-light"
+                />
+              </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description">Description</Label>
-              <Input
-                placeholder="Description"
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="status">Status</Label>
-              <Select value={taskStatus} onValueChange={setTaskStatus}>
+            <div className=" flex gap-2 ">
+              <div className="grid items-center gap-4">
+                {/* <Label htmlFor="status">Status</Label> */}
+                <Select value={taskStatus} onValueChange={setTaskStatus}>
                 <SelectTrigger id="status">
-                  <SelectValue placeholder="Select" />
+                  <SelectValue placeholder="Status">
+                    {/* {taskStatus || ( <span className="text-muted-foreground">Status</span> )} */}
+                    <span>Status</span>
+                  </SelectValue>
                 </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="ToDo">ToDo</SelectItem>
-                  <SelectItem value="InProgress">InProgress</SelectItem>
-                  <SelectItem value="Completed">Completed</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="priority">Priority</Label>
-              <Select value={priority} onValueChange={setPriority}>
-                <SelectTrigger id="priority">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="Low">Low</SelectItem>
-                  <SelectItem value="Medium">Medium</SelectItem>
-                  <SelectItem value="High">High</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="dueDate">Due Date</Label>
-              {/* @ts-ignore */}
-              <DatePickerDemo value={dueDate} onChange={setDueDate} />
+                  <SelectContent position="popper">
+                    <SelectItem value="ToDo">ToDo</SelectItem>
+                    <SelectItem value="InProgress">InProgress</SelectItem>
+                    <SelectItem value="Completed">Completed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid items-center gap-4">
+                {/* <Label htmlFor="priority">Priority</Label> */}
+                <Select value={priority} onValueChange={setPriority}>
+                  <SelectTrigger id="priority">
+                    {/* <SelectValue placeholder="Select" /> */}
+                    <span>Priority</span>
+                  </SelectTrigger>
+                  <SelectContent position="popper">
+                    <SelectItem value="Low">Low</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="High">High</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid items-center gap-4">
+                {/* <Label htmlFor="dueDate">Due Date</Label> */}
+                {/* @ts-ignore */}
+                <DatePickerDemo value={dueDate} onChange={setDueDate}/>
+              </div>
             </div>
           </div>
           <DialogFooter>
