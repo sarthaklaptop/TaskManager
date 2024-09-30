@@ -13,12 +13,15 @@ import { cn } from "@/lib/utils";
 import { signOut, useSession } from "next-auth/react";
 import TabsDemo from "@/app/(dashboard)/dashboard/page";
 import { Button } from "./ui/button";
+import { usePathname } from "next/navigation";
+import ProfilePage from "@/app/(dashboard)/profile/page";
+import SettingsPage from "@/app/(dashboard)/settings/page";
 
 export function SidebarDemo() {
   const links = [
     {
       label: "Dashboard",
-      href: "#",
+      href: "/dashboard",
       icon: (
         // <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
         <DashboardIcon />
@@ -141,8 +144,19 @@ export const LogoIcon = () => {
 };
 
 const Dashboard = () => {
+  const pathname = usePathname();
+
+  if (pathname === '/profile') {
+    return <ProfilePage />;
+  }
+
+  if(pathname === '/settings') {
+    return <SettingsPage />;
+  }
   return (
     <div className="flex flex-1 gap-0">
+
+
       <TabsDemo/>
     </div>
   );
