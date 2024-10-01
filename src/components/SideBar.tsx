@@ -155,8 +155,6 @@ const Dashboard = () => {
   }
   return (
     <div className="flex flex-1 gap-0">
-
-
       <TabsDemo/>
     </div>
   );
